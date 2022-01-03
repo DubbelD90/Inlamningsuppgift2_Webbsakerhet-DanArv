@@ -15,5 +15,6 @@ namespace Inlamningsuppgift2_Webbsakerhet_DanArv.Data
         }
 
         public DbSet<Inlamningsuppgift2_Webbsakerhet_DanArv.Models.Comment> Comment { get; set; }
+        public DbSet<Inlamningsuppgift2_Webbsakerhet_DanArv.Models.ApplicationFile> ApplicationFile{ get; set; }
     }
 }

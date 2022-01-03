@@ -1,0 +1,14 @@
+﻿body {
+    background-color:antiquewhite;
+}
+.comment {
+    border: solid 1px;
+    border-radius: 0.5em;
+    padding: 0.5em;
+}
+
+    .comment .content {
+        border: solid 1px;
+        border-radius: 0.5em;
+        padding: 0.5em;
+    }

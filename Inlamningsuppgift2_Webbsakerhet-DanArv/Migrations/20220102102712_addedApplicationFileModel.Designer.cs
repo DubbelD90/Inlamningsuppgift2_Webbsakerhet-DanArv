@@ -4,14 +4,16 @@ using Inlamningsuppgift2_Webbsakerhet_DanArv.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Inlamningsuppgift2_Webbsakerhet_DanArv.Migrations
 {
     [DbContext(typeof(Inlamningsuppgift2_Webbsakerhet_DanArvContext))]
-    partial class Inlamningsuppgift2_Webbsakerhet_DanArvContextModelSnapshot : ModelSnapshot
+    [Migration("20220102102712_addedApplicationFileModel")]
+    partial class addedApplicationFileModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

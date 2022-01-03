@@ -13,19 +13,24 @@ namespace Inlamningsuppgift2_Webbsakerhet_DanArv.Controllers
 {
     public class CommentsController : Controller
     {
-        private readonly Inlamningsuppgift2_Webbsakerhet_DanArvContext _context;
+        private readonly Inlamningsuppgift2_Webbsakerhet_DanArvContext Db;
         public List<string> allowedTags { get; set; }
 
         public CommentsController(Inlamningsuppgift2_Webbsakerhet_DanArvContext context)
         {
-            _context = context;
-            allowedTags = new List<string>() { "<b>", "</b>" };
+            Db = context;
+            allowedTags = new List<string>() 
+            { 
+                "<b>", "</b>", 
+                "<i>", "</i>",
+                "<strong>", "</strong>"
+            };
         }
 
         // GET: Comments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Comment.ToListAsync());
+            return View(await Db.Comment.ToListAsync());
         }
 
         // GET: Comments/Details/5
@@ -36,7 +41,7 @@ namespace Inlamningsuppgift2_Webbsakerhet_DanArv.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comment
+            var comment = await Db.Comment
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (comment == null)
             {
@@ -67,11 +72,11 @@ namespace Inlamningsuppgift2_Webbsakerhet_DanArv.Controllers
                 foreach(var tag in allowedTags)
                 {
                     string encodedTag = HttpUtility.HtmlEncode(tag);
-                    encodedContent.Replace(encodedTag, tag);
+                    encodedContent = encodedContent.Replace(encodedTag, tag);
                 }
                 comment.Content = encodedContent;
-                _context.Add(comment);
-                await _context.SaveChangesAsync();
+                Db.Add(comment);
+                await Db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(comment);
@@ -85,7 +90,7 @@ namespace Inlamningsuppgift2_Webbsakerhet_DanArv.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comment.FindAsync(id);
+            var comment = await Db.Comment.FindAsync(id);
             if (comment == null)
             {
                 return NotFound();
@@ -109,8 +114,8 @@ namespace Inlamningsuppgift2_Webbsakerhet_DanArv.Controllers
             {
                 try
                 {
-                    _context.Update(comment);
-                    await _context.SaveChangesAsync();
+                    Db.Update(comment);
+                    await Db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -136,7 +141,7 @@ namespace Inlamningsuppgift2_Webbsakerhet_DanArv.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comment
+            var comment = await Db.Comment
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (comment == null)
             {
@@ -151,15 +156,15 @@ namespace Inlamningsuppgift2_Webbsakerhet_DanArv.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var comment = await _context.Comment.FindAsync(id);
-            _context.Comment.Remove(comment);
-            await _context.SaveChangesAsync();
+            var comment = await Db.Comment.FindAsync(id);
+            Db.Comment.Remove(comment);
+            await Db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CommentExists(Guid id)
         {
-            return _context.Comment.Any(e => e.Id == id);
+            return Db.Comment.Any(e => e.Id == id);
         }
     }
 }

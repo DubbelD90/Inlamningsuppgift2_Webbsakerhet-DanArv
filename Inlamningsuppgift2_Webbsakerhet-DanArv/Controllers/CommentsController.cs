@@ -30,6 +30,25 @@ namespace Inlamningsuppgift2_Webbsakerhet_DanArv.Controllers
         // GET: Comments
         public async Task<IActionResult> Index()
         {
+            if (!Db.Comment.Any())
+            {
+                var comment1 = new Comment
+                {
+                    Content = "<strong><i>Hello what do you think you are doing commenting this shit?</i></strong>",
+                    TimeStamp = DateTime.Now,
+                };
+                Db.Comment.Add(comment1);
+                var comment2 = new Comment
+                {
+                    Content = "<b>Last class is done soon and we will get rolling on our internships!</b>",
+                    TimeStamp = DateTime.Now.AddDays(1),
+                };
+                Db.Comment.Add(comment2);
+                await Db.SaveChangesAsync();
+
+                var comments = await Db.Comment.OrderByDescending(x => x.TimeStamp).ToListAsync();
+                return View(comments);
+            }
             return View(await Db.Comment.ToListAsync());
         }
 

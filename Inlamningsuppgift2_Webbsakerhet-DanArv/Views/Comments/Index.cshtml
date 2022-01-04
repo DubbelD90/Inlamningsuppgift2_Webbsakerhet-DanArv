@@ -17,7 +17,10 @@
     <div class="content">@Html.Raw(comment.Content)</div>
     <div class="timeStamp">
         <p><b>Created:</b></p>
-        @comment.TimeStamp
+        @comment.TimeStamp |
+        <div class="editButton">
+            <a asp-action="Edit" asp-route-id="@comment.Id">Edit</a>
+        </div>
     </div>
 </div>
 }

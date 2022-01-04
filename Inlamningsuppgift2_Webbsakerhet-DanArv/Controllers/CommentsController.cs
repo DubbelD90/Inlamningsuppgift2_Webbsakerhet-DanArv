@@ -19,9 +19,9 @@ namespace Inlamningsuppgift2_Webbsakerhet_DanArv.Controllers
         public CommentsController(Inlamningsuppgift2_Webbsakerhet_DanArvContext context)
         {
             Db = context;
-            allowedTags = new List<string>() 
-            { 
-                "<b>", "</b>", 
+            allowedTags = new List<string>()
+            {
+                "<b>", "</b>",
                 "<i>", "</i>",
                 "<strong>", "</strong>"
             };
@@ -88,7 +88,7 @@ namespace Inlamningsuppgift2_Webbsakerhet_DanArv.Controllers
                 comment.Id = Guid.NewGuid();
                 comment.TimeStamp = DateTime.Now;
                 string encodedContent = HttpUtility.HtmlEncode(comment.Content);
-                foreach(var tag in allowedTags)
+                foreach (var tag in allowedTags)
                 {
                     string encodedTag = HttpUtility.HtmlEncode(tag);
                     encodedContent = encodedContent.Replace(encodedTag, tag);
@@ -131,6 +131,14 @@ namespace Inlamningsuppgift2_Webbsakerhet_DanArv.Controllers
 
             if (ModelState.IsValid)
             {
+                comment.TimeStamp = DateTime.Now;
+                string encodedContent = HttpUtility.HtmlEncode(comment.Content);
+                foreach (var tag in allowedTags)
+                {
+                    string encodedTag = HttpUtility.HtmlEncode(tag);
+                    encodedContent = encodedContent.Replace(encodedTag, tag);
+                }
+                comment.Content = encodedContent;
                 try
                 {
                     Db.Update(comment);

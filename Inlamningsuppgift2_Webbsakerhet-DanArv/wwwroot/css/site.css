@@ -90,4 +90,7 @@ body {
     display:flex;
     justify-content:center;
     }
+    .timeStamp .editButton{
+        margin:0.5em;
+    }
 

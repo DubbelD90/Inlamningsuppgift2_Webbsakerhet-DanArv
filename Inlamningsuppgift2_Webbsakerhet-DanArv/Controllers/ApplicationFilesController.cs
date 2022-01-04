@@ -13,6 +13,8 @@ using Inlamningsuppgift2_Webbsakerhet_DanArv.Utilities;
 using System.Web;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
+using System.IO;
+using System.Diagnostics;
 
 namespace Inlamningsuppgift2_Webbsakerhet_DanArv.Controllers
 {
@@ -76,7 +78,7 @@ namespace Inlamningsuppgift2_Webbsakerhet_DanArv.Controllers
                                 ModelState, permittedExtensions, fileSizeLimit);
                     if (applicationFile.Content.Length == 0)
                     {
-                        return RedirectToAction("Index", "ApplicationFiles");
+                        return RedirectToAction("Error");
                     }
                     applicationFile.Size = applicationFile.Content.Length;
 
@@ -91,7 +93,7 @@ namespace Inlamningsuppgift2_Webbsakerhet_DanArv.Controllers
             }
 
             // If the code runs to this location, it means that no files have been saved
-            return BadRequest("No files data in the request.");
+            return RedirectToAction("Error");
         }
 
         // GET: ApplicationFiles/Download/5
@@ -144,6 +146,12 @@ namespace Inlamningsuppgift2_Webbsakerhet_DanArv.Controllers
         private bool ApplicationFileExists(Guid id)
         {
             return Db.ApplicationFile.Any(e => e.Id == id);
+        }
+        
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
